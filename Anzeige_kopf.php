@@ -36,7 +36,7 @@ $admin = isset($_SESSION["rolle"]) ? $_SESSION["rolle"] : '';
         switch (art) {
             case 0:
                 if (document.getElementById('klasse').value == -1 && document.getElementById('lehrer').value == -1 && document.getElementById('zimmer').value == -1) {
-                    return;
+                    //return;
                 }
                 if (document.getElementById('block').value == -1) {
                     document.getElementById('lehrer').value = -1;

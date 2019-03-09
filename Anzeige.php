@@ -7,9 +7,16 @@
         $varklasse=-1;
         $varlehrer=-1;
         $varzimmer=-1;
+        $kstring='';
+        $bstring='';
+        $zstring='';
+        $lstring='';
+        $klstring='';
+        $b=-1;
         $ar_get = array("block","lehrer","zimmer","klasse");
         if (array_key_exists("block",$_POST)){
             $varblock = $_POST['block'];
+            $b=$varblock;
         }
         if (array_key_exists("lehrer",$_POST)){
             $varlehrer = $_POST['lehrer'];
@@ -20,11 +27,12 @@
         if (array_key_exists("klasse",$_POST)){
             $varklasse = $_POST['klasse'];
             $ar_klasse = explode("|", $varklasse);
+            if($ar_klasse[1]>3){$varblock = $ar_klasse[1];$b = $varblock-4;}
         }
         $wherestring='';
         if ($varblock != -1){
-            $wherestring .= " and k.block = ". $varblock;
-        }
+            $wherestring .= " and (k.block = ". $varblock." or k.block= ".($varblock+4).")";
+        } 
         if ($varlehrer != -1){
             $wherestring .= " and (p.Lehrer1 = ". $varlehrer." or p.Lehrer2 = ".$varlehrer.")";
         } 
@@ -36,13 +44,13 @@
         }
         if($wherestring==''){
             $wherestring = "and 1=2";
-        }  
+        } 
 
         $sql = "SELECT p.Klassen_ID, p.Tag,p.Stunde,\n"
         . "ifnull(k.Name,'') Klasse, k.block , \n"
         . "ifnull(l.Name,'') Klassenlehrer, \n"
         . "ifnull(z1.Raum,'') z1, ifnull(z2.Raum,'') z2, \n"
-        . "ifnull(l1.Name,'') l1, ifnull(l2.name,'') l2, \n"
+        . "ifnull(l1.Name,'') l1, ifnull(l2.name,'') l2, ifnull(l1.Kuerzel,'') lk1, ifnull(l2.Kuerzel,'') lk2, \n"
         . "ifnull(f1.bezeichnung,'') f1, ifnull(f2.bezeichnung,'') f2\n"
         . "FROM plan p\n"
         . "left join klassen k on p.Klassen_ID = k.DAT_ID and k.Status=1\n"
@@ -53,10 +61,70 @@
         . "left join Lehrer l2 on p.Lehrer2 = l2.DAT_ID and l2.Status=1\n"
         . "left join faecher f1 on p.Fach1 = f1.DAT_ID and f1.Status=1\n"
         . "left join faecher f2 on p.Fach2 = f2.DAT_ID and f2.Status=1\n"
-        . "WHERE p.STATUS = 1 ".$wherestring." order by p.Klassen_ID, p.Stunde, p.Tag";
+        . "WHERE p.STATUS = 1 ".$wherestring." order by p.Stunde, p.Tag, p.Klassen_ID";
 
-        //foreach ($pdo->query($sql) as $row) {
-        //}
+        //Planarray anlegen
+        $planarray = Array(
+            array('','','','','','','','','',''),
+            array('','','','','','','','','',''),
+            array('','','','','','','','','',''),
+            array('','','','','','','','','',''),
+            array('','','','','','','','','',''),
+            array('7.30 - 8.15','8.15 - 9.00','9.30 - 10.15','10.15 - 11.00','11.15 - 12.00','12.00 - 12.45','13.30 - 14.15','14.15 - 15.00','15.05 - 15.50','15.50 - 16.35')
+        );
+
+        //Datenbankanbingung / Abfrage
+        $statement = $pdo->prepare($sql);
+        $statement->execute();
+        $plan = $statement->fetchAll(PDO::FETCH_ASSOC); 
+
+        //Planarray mit DB-Datne füllen
+        foreach($plan as $key => $row){
+            $ausgabe='';
+            //Klasse (wenn nicht im Filter)
+            if($ar_klasse[0]==-1){
+                $ausgabe .= $row["Klasse"];
+            }elseif($kstring==''){
+                $kstring = "Klasse: ".$row["Klasse"];
+                $klstring = "Klassenleiter: ".$row["Klassenlehrer"];
+                //switch ($b) {
+                //    case 0 : $bstring = 'A-Block';
+                //        break;
+                //    case 1 : $bstring = 'B-Block';
+                //        break;
+                //    case 2 : $bstring = 'C-Block';
+                //        break;
+                //}
+            }
+            if($varlehrer==-1){
+                if($ausgabe!=''){$ausgabe.='<br>';}
+                $ausgabe .= $row["l1"];
+                if($row["l2"]!=""){$ausgabe.=" / ".$row["l2"];}
+            }elseif($lstring==''){
+                $lstring = $row["lk1"];
+                if($lstring==''){$lstring = $row["lk2"];}
+            }
+            if($varzimmer==-1){
+                if($ausgabe!=''){$ausgabe.='<br>';}
+                $ausgabe.=$row["z1"];
+                if($row["z2"]!=""){$ausgabe.=" / ".$row["z2"];}
+            }elseif ($zstring==''){
+                $zstring = $row["z1"];
+                if($zstring==''){$zstring = $row["z2"];}
+            }
+            if($ausgabe!=''){$ausgabe.='<br>';}
+            $ausgabe.=$row["f1"];
+            if($row["f2"]!=""){$ausgabe.=" / ".$row["f2"];}
+            switch ($b) {
+                case 0 : $bstring = 'A-Block';
+                    break;
+                case 1 : $bstring = 'B-Block';
+                    break;
+                case 2 : $bstring = 'C-Block';
+                    break;
+            }
+            $planarray[$row['Tag']][$row['Stunde']] = $ausgabe;
+        }
      ?>
 <head>
     <meta charset="UTF-8">
@@ -67,70 +135,30 @@
 </head>
 
 <body style="font-family:arial;">  
-    <table border="1px" cellpadding="5px" cellspacing="0px" width="100%" >
-    <?php $merkstunde = 0; $merktag=0; 
-        $statement = $pdo->prepare($sql);
-        $statement->execute();
-        $plan = $statement->fetchAll(PDO::FETCH_ASSOC);    
-        //echo $sql."<br>";
-        //var_dump($plan);
+    <?php   
         if(count($plan)<>0){
-            echo '
-                <tr bgcolor="yellow">
-                <td width="10%">Block</td>
+            echo $kstring." \t".$klstring;
+            echo '<table border="1px" cellpadding="5px" cellspacing="0px" width="100%" >';
+            //Tabellenkopf schreiben
+            echo '<tr bgcolor="yellow">
+                <td width="10%">'.$bstring.' '.$lstring.'</td>
                 <td width="18%">Montag</td>
                 <td width="18%">Dienstag</td>
                 <td width="18%">Mittwoch</td>
                 <td width="18%">Donnnerstag</td>
                 <td width="18%">Freitag</td>
                 </tr>';
-            //while($row = $statement->fetch()){
-            foreach($plan as $key => $row){
-                if($row["Stunde"] == $merkstunde){
-                    echo "<tr>";
-                    switch ($row['Stunde']) {
-                        case 0: echo "<td>7.30 - 8.15</td>";
-                            break;
-                        case 1: echo "<td>8.15 - 9.00</td>";
-                            break;
-                        case 2: echo "<td>9.30 - 10.15</td>";
-                            break;
-                        case 3: echo "<td>10.15 - 11.00</td>";
-                            break;
-                        case 4: echo "<td>11.15 - 12.00</td>";
-                            break;
-                        case 5: echo "<td>12.00 - 12.45</td>";
-                            break;
-                        case 6: echo "<td>13.30 - 14.15</td>";
-                            break;
-                        case 7: echo "<td>14.15 - 15.00</td>";
-                            break;
-                        case 8: echo "<td>15.05 - 15.50</td>";
-                            break;
-                        case 9: echo "<td>15.50 - 16.35</td>";
-                            break;
-                    }
-                    $merkstunde++;
+            for($s=0;$s<10;$s++){
+                echo "<tr>";
+                echo "<td>".$planarray[5][$s]."</td>";
+                for($t=0;$t<5;$t++){
+                    echo "<td>".$planarray[$t][$s]."</td>";
                 }
-                $ausgabe = "<td>".$row["l1"];
-                if($row["l2"]!=""){
-                    $ausgabe.=" / ".$row["l2"];
-                }
-                $ausgabe.="<br>".$row["z1"];
-                if($row["z2"]!=""){
-                    $ausgabe.=" / ".$row["z2"];
-                }
-                $ausgabe.="<br>".$row["f1"];
-                if($row["f2"]!=""){
-                    $ausgabe.=" / ".$row["f2"];
-                }
-                $ausgabe.="</td>";
-                echo $ausgabe;
-                if($row["Tag"]==4 ){
-                    echo "</tr>";
-                }
+                echo "</tr>";
             }
             echo "</table>";
+            // var_dump($planarray);
+
         }else{
             Echo "Kein Stundenplan für die Kriterien gefunden!";
         }

@@ -48,7 +48,7 @@ if ($admin == 0) {
         document.Daten.action = "anzeige.php";
         document.Daten.submit();
     }
-    function anzeige(art) {
+    function anzeigePlan(art) {
         switch (art) {
             case 0:
                 if (document.getElementById('klasse').value == '-1|-1' && document.getElementById('lehrer').value == -1 && document.getElementById('zimmer').value == -1) {
@@ -103,14 +103,14 @@ if ($admin == 0) {
         <form name="Daten" method="post" target="anzeige">
             <div style="float:left;padding-right:10px;<?php echo $hide; ?>">
                 <label for="block">Block</label><br>
-                <select id="block" name="block" onchange="anzeige(0);">
+                <select id="block" name="block" onchange="anzeigePlan(0);">
                     <option value="-1">-- Block wählen --</option>
                     <option value="0">A-Block</option>
                     <option value="1">B-Block</option>
                     <option value="2">C-Block</option>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;" onchange="anzeige(1);">
+            <div style="float:left;padding-right:10px;" onchange="anzeigePlan(1);">
                 <label for="klasse">Klasse</label><br>
                 <select id="klasse" name="klasse">
                     <option value="-1|-1" <?php if($classId > -1) echo 'disabled '?>>-- Klasse wählen --</option>
@@ -137,7 +137,7 @@ if ($admin == 0) {
                     ?>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeige(2);">
+            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeigePlan(2);">
                 <label for="lehrer">Lehrer</label><br>
                 <select id="lehrer" name="lehrer">
                     <option value="-1">-- Lehrer wählen --</option>
@@ -148,7 +148,7 @@ if ($admin == 0) {
                     ?>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeige(3);">
+            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeigePlan(3);">
                 <label for="zimmer">Zimmer</label><br>
                 <select id="zimmer" name="zimmer">
                     <option value="-1">-- Zimmer wählen --</option>

@@ -152,8 +152,8 @@ function lese_lehrer($path,$pdo){
 		  $iarray = explode(';', $larray[$i]);
 		  //echo $larray[$i]."<br>";
 		  //echo $i." ".$iarray[0]." ".$iarray[1]."<br>";
-		  $insert = "Insert Into lehrer (Name, Kuerzel,DAT_ID, Datum, Status) values (".$iarray[0].",".$iarray[1].",".$i.",CURDATE(),1)";
-		  $pdo->query($insert);
+		  $insert = "Insert Into lehrer (Name, Kuerzel,DAT_ID, Datum, Status) values (".utf8_encode($iarray[0]).",".utf8_encode($iarray[1]).",".$i.",CURDATE(),1)";
+		  $pdo->query(utf8_decode($insert));
 	   }
         dataInFolderPass($path, ".txt");
     }else{
@@ -161,6 +161,7 @@ function lese_lehrer($path,$pdo){
         $errorstring = $errorstring."Das Dokument ".$path. " konnte nicht gefunden werden!<br>";
     }
 }
+
 
 function lese_zimmer($path,$pdo){
     $zeile = '';
@@ -174,7 +175,7 @@ function lese_zimmer($path,$pdo){
         $update  ='Update zimmer set Status = 0 where status=1';
         $pdo -> query($update);
 	   foreach ($datei as $key => $value) {
-            preg_match_all('/\(N:([0-9]*); *K:\'([A-Z a-z 0-9]*)\'\)/m', $value, $matches, PREG_SET_ORDER, 0);
+            preg_match_all('/\(V:\'([A-Z a-z]*)\'; *K:\'([A-Z a-z]*)\';/m', $value, $matches, PREG_SET_ORDER, 0);
             foreach ($matches as $key => $value) {
                 //echo $i." ".$value[1]." ".$value[2]."<br>";
                 //echo $i." ".$iarray[0]." ".$iarray[1]."<br>";

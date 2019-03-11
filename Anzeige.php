@@ -86,7 +86,7 @@
                 $ausgabe .= $row["Klasse"];
             }elseif($kstring==''){
                 $kstring = "Klasse: ".$row["Klasse"];
-                $klstring = "Klassenleiter: ".$row["Klassenlehrer"];
+                $klstring = "Klassenleiter: ".utf8_encode($row["Klassenlehrer"]);
                 //switch ($b) {
                 //    case 0 : $bstring = 'A-Block';
                 //        break;
@@ -98,8 +98,8 @@
             }
             if($varlehrer==-1){
                 if($ausgabe!=''){$ausgabe.='<br>';}
-                $ausgabe .= $row["l1"];
-                if($row["l2"]!=""){$ausgabe.=" / ".$row["l2"];}
+                $ausgabe .= utf8_encode($row["l1"]);
+                if($row["l2"]!=""){$ausgabe.=" / ".utf8_encode($row["l2"]);}
             }elseif($lstring==''){
                 $lstring = $row["lk1"];
                 if($lstring==''){$lstring = $row["lk2"];}

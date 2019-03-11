@@ -11,7 +11,7 @@
 (V:'Hermann';    K:'He'; S:26*2), (V:'Kleist';       K:'Kt'; S:26*2), (V:'Z';          K:'Z '; S:26*2),
 (V:'Khn';       K:'K'; S:26*2), (V:'Stamm';        K:'St'; S:26*2), (V:'Herrlich';   K:'Hh'; S:26*2),
 (V:'Grube';      K:'Gr'; S:20*2), (V:'Fischer';      K:'Fi'; S:18*2), (V:'Wolfram';    K:'Wo'; S:26*2),
-(V:'Zug';        K:'Zu'; S:26*2), (V:'Säger';        K:'Sä'; S:26*2), (V:'Stecher';    K:'Sr'; S:26*2),
+(V:'Zug';        K:'Zu'; S:26*2), (V:'S„ger';        K:'S„'; S:26*2), (V:'Stecher';    K:'Sr'; S:26*2),
 (V:'Herold';     K:'Hr'; S:26*2), (V:'Kleingut';     K:'Kg'; S:26*2), (V:'Distel';     K:'Di'; S:26*2),
 (V:'Kraushaar';  K:'Kr'; S:26*2), (V:'Abel';         K:'Ab'; S:26*2), (V:'Dichter';    K:'Dt'; S:26*2),
 (V:'Mürkisch';   K:'Mü'; S:26*2), (V:'Grund';        K:'Gd'; S:26*2), (V:'Friedrich';  K:'Fd'; S:26*2),

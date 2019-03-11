@@ -143,7 +143,7 @@ if ($admin == 0) {
                     <option value="-1">-- Lehrer wählen --</option>
                     <?php 
                     foreach ($pdo->query($lsql) as $row) {
-                        echo '<option value="' . $row['DAT_ID'] . '">' . $row['Name'] . '</option>';
+                        echo '<option value="' . $row['DAT_ID'] . '">' . utf8_encode($row['Name']) . '</option>';
                     }
                     ?>
                 </select>

@@ -19,7 +19,7 @@ $kstring= '';
 $admin = isset($_SESSION["rolle"]) ? $_SESSION["rolle"] : '';
 $classId = isset($_SESSION["classe"]) ? $_SESSION["classe"] : '';
 
-if ($classId>-1){
+if ($classId>-1 && $admin == 0){
     $kstring = ' and DAT_ID = '.$classId;
 }
 //Datenbank anbinden    
@@ -110,10 +110,10 @@ if ($admin == 0) {
                     <option value="2">C-Block</option>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;" onchange="anzeigePlan(1);">
+            <div style="float:left;padding-right:10px;" >
                 <label for="klasse">Klasse</label><br>
-                <select id="klasse" name="klasse">
-                    <option value="-1|-1" <?php if($classId > -1) echo 'disabled '?>>-- Klasse wählen --</option>
+                <select id="klasse" name="klasse" onchange="anzeigePlan(1);">
+                    <option value="-1|-1" <?php if($classId > -1 && $admin == 0) echo 'disabled '?>>-- Klasse wählen --</option>
                     <?php 
                     foreach ($pdo->query($ksql) as $row) {
                         switch (($row['block'] % 4)) {
@@ -131,26 +131,28 @@ if ($admin == 0) {
                                 break;
                         }
                         $sel = '';
-                        if($row['DAT_ID'] == $classId){$sel = ' selected ';}
+                        if($row['DAT_ID'] == $classId && $admin == 0){$sel = ' selected ';}
                         echo '<option value="' . $row['DAT_ID'] . '|' . $row['block'] . '"'.$sel.'>' . $row['Name'] . ' (' . $b . ')</option>';
                     }
                     ?>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeigePlan(2);">
+            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" >
                 <label for="lehrer">Lehrer</label><br>
-                <select id="lehrer" name="lehrer">
+                <select id="lehrer" name="lehrer" onchange="anzeigePlan(2);">
                     <option value="-1">-- Lehrer wählen --</option>
                     <?php 
                     foreach ($pdo->query($lsql) as $row) {
-                        echo '<option value="' . $row['DAT_ID'] . '">' . utf8_encode($row['Name']) . '</option>';
+                        $sel2 = '';
+                        if($row['DAT_ID'] == $classId && $admin == 1){$sel2 = ' selected ';}
+                        echo '<option value="' . $row['DAT_ID'] .'"'.$sel2.'>' . utf8_encode($row['Name']) . '</option>';
                     }
                     ?>
                 </select>
             </div>
-            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" onchange="anzeigePlan(3);">
+            <div style="float:left;padding-right:10px;<?php echo $hide; ?>" >
                 <label for="zimmer">Zimmer</label><br>
-                <select id="zimmer" name="zimmer">
+                <select id="zimmer" name="zimmer" onchange="anzeigePlan(3);">
                     <option value="-1">-- Zimmer wählen --</option>
                     <?php 
                     foreach ($pdo->query($zsql) as $row) {
@@ -168,6 +170,8 @@ if ($admin == 0) {
             <button type="button" onclick="akt()">Stammdaten aktualisieren</button>
         <?php 
         } ?>
+            <button type="button" onclick="document.anzeige.print()">Drucken</button>
+
             <button type="button" onclick="Logout()">Abmelden</button>
         </div>
         

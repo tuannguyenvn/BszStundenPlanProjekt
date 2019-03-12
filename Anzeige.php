@@ -101,8 +101,8 @@
                 $ausgabe .= utf8_encode($row["l1"]);
                 if($row["l2"]!=""){$ausgabe.=" / ".utf8_encode($row["l2"]);}
             }elseif($lstring==''){
-                $lstring = $row["lk1"];
-                if($lstring==''){$lstring = $row["lk2"];}
+                $lstring = utf8_encode($row["lk1"]);
+                if($lstring==''){$lstring = utf8_encode($row["lk2"]);}
             }
             if($varzimmer==-1){
                 if($ausgabe!=''){$ausgabe.='<br>';}
@@ -131,34 +131,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Stundenplan</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
 
 </head>
 
-<body style="font-family:arial;">  
+<body style="font-family:arial;">
+<script type="text/javascript" src="js/bootstrap.js"></script>  
     <?php   
         if(count($plan)<>0){
             echo $kstring." \t".$klstring;
-            echo '<table border="1px" cellpadding="5px" cellspacing="0px" width="100%" >';
+            echo '<table border="1px" class="table table-sm table-bordered table-striped">';
             //Tabellenkopf schreiben
-            echo '<tr bgcolor="yellow">
-                <td width="10%">'.$bstring.' '.$lstring.'</td>
-                <td width="18%">Montag</td>
-                <td width="18%">Dienstag</td>
-                <td width="18%">Mittwoch</td>
-                <td width="18%">Donnnerstag</td>
-                <td width="18%">Freitag</td>
+            // echo '<thead class="bg-light">';
+            echo '<tr class="text-center">
+                <th width="12%">'.$bstring.' '.$lstring.'</th>
+                <th >Montag</th>
+                <th >Dienstag</th>
+                <th >Mittwoch</th>
+                <th >Donnnerstag</th>
+                <th >Freitag</th>
                 </tr>';
+                
             for($s=0;$s<10;$s++){
-                echo "<tr>";
-                echo "<td>".$planarray[5][$s]."</td>";
+                echo '<tr class="text-center">';
+                echo "<td>".utf8_encode($planarray[5][$s])."</td>";
                 for($t=0;$t<5;$t++){
-                    echo "<td>".$planarray[$t][$s]."</td>";
+                    echo "<td>".utf8_encode($planarray[$t][$s])."</td>";
                 }
                 echo "</tr>";
             }
             echo "</table>";
-            // var_dump($planarray);
-
         }else{
             Echo "Kein Stundenplan für die Kriterien gefunden!";
         }

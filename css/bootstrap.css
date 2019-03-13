@@ -61,8 +61,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 15px;
+  font-weight: 350;
   line-height: 1.5;
   color: #212529;
   text-align: left;
@@ -2334,8 +2334,8 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #17a2b8;
+  border-color: #17a2b8;
 }
 
 .btn-primary:hover {
@@ -9025,6 +9025,9 @@ a.text-dark:hover, a.text-dark:focus {
   .table .thead-dark th {
     color: inherit;
     border-color: #dee2e6;
-  }
+  }.table-sm th, .table-sm td {
+    padding: 0.1rem;
+}
+
 }
 /*# sourceMappingURL=bootstrap.css.map */

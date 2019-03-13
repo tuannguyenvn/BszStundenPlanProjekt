@@ -140,11 +140,11 @@
     <?php   
         if(count($plan)<>0){
             echo $kstring." \t".$klstring;
-            echo '<table border="1px" class="table table-sm table-bordered table-striped">';
+            echo '<table border="1px" class="table table-sm table-bordered table-striped" id="calendar">';
             //Tabellenkopf schreiben
             // echo '<thead class="bg-light">';
             echo '<tr class="text-center">
-                <th width="12%">'.$bstring.' '.$lstring.'</th>
+                <th width="10%">'.$bstring.' '.$lstring.'</th>
                 <th >Montag</th>
                 <th >Dienstag</th>
                 <th >Mittwoch</th>

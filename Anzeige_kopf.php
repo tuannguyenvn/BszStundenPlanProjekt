@@ -96,14 +96,15 @@ if ($admin == 0) {
         }
         document.Daten.action = "anzeige.php";
         document.Daten.submit();
-        //document.anzeige.reload();
+    }
+
+    function Drucken() {
+        anzeige.print();
     }
 </script>
 
-<body style="padding:0;margin0;" <?php if ($classId > -1) echo 'onload ="SchuelerSelected()" ' ?>>
+<body <?php if ($classId > -1) echo 'onload ="SchuelerSelected()" ' ?>>
     <script type="text/javascript" src="js/bootstrap.js"></script>
-    <!-- Static navbar -->
-    <!-- Just an image -->
     <!-- <nav class="navbar navbar-light bg-light"> -->
     <!-- <nav class="navbar navbar-light bg-light navbar-fixed-top" role="navigation">
             <div class="container-fluid">
@@ -182,17 +183,17 @@ if ($admin == 0) {
                         ?>
                 </select>
             </div>
-            <div style="float:right;padding-right:10px;margin-top:32px">        
+            <div style="float:right;padding-right:10px;margin-top:28px">        
                 <?php
             if ($admin == 2) {
                 ?>
                 
-                <button type="button" class="btn btn-primary btn-sm" onclick="akt()">Stammdaten aktualisieren</button>
+                <button type="button" class="btn btn-primary btn-sm" style="margin-top:5px" onclick="akt()">Stammdaten aktualisieren</button>
                 <?php 
                 } ?>
-                <button type="button" class="btn btn-primary btn-sm" onclick="document.anzeige.print()">Drucken</button>
+                <button type="button" class="btn btn-primary btn-sm" style="margin-top:5px" onclick="Drucken()">Drucken</button>
     
-                <button type="button" class="btn btn-primary btn-sm" onclick="Logout()">Abmelden</button>  
+                <button type="button" class="btn btn-primary btn-sm" style="margin-top:5px" onclick="Logout()">Abmelden</button>  
             </div>         
         </form>
 
@@ -202,12 +203,9 @@ if ($admin == 0) {
         <?php 
         } ?>
     </div>
-    <!-- <div id="inhalt" style="height:calc(100% - 170px);width:calc(100% - 18px);margin-top:150px;position:absolute;" > -->
-        <div class="embed-responsive embed-responsive-4by3" style="margin-top:55px" >
-            <iframe id="anzeige" name="anzeige" class="embed-responsive-item" src="anzeige.php" height="70%"></iframe>
+        <div class="embed-responsive embed-responsive-4by3" style="margin-top:0px;width:calc(100%-50px);height:85%;padding-left:10px;padding-right:10px;" >
+            <iframe id="anzeige" name="anzeige" class="embed-responsive-item" src="anzeige.php" style="height:100%" ></iframe>
         </div> 
-        <!-- <iframe id="anzeige" name="anzeige" src="anzeige.php" style="width:100%;height:100%;border:0;"></iframe> -->
-
 </body>
 
 </html>

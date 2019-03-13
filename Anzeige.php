@@ -154,9 +154,9 @@
                 
             for($s=0;$s<10;$s++){
                 echo '<tr class="text-center">';
-                echo "<td>".utf8_encode($planarray[5][$s])."</td>";
+                echo "<td>".$planarray[5][$s]."</td>";
                 for($t=0;$t<5;$t++){
-                    echo "<td>".utf8_encode($planarray[$t][$s])."</td>";
+                    echo "<td>".$planarray[$t][$s]."</td>";
                 }
                 echo "</tr>";
             }

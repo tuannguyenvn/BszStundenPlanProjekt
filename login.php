@@ -17,6 +17,7 @@
         <?php
         $connect = new PDO('mysql:host=localhost;dbname=stundenplan', 'root', '', array(PDO::ATTR_PERSISTENT => true));
         if (isset($_POST["btn_submit"])) {
+            $error = '';
             $userName = $_POST["loginName"];
             $password = $_POST["password"];
             $sql = "select * from nutzer where loginName = '$userName' and password = '$password'";
@@ -27,7 +28,7 @@
 
                 $matchUser = $statement->fetchAll(PDO::FETCH_NUM);
                 if (empty($matchUser)) {
-                    echo "Falsche Name oder Passwort gegeben";
+                    $error = "Falsche Name oder Passwort gegeben";
                 } else {
                     //save Session
                     $_SESSION["loginName"] = $userName;
@@ -59,7 +60,8 @@
                                 <label for="password" class="text-info">Kenntwort:</label><br>
                                 <input type="password" name="password" id="password" class="form-control">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group">    
+                                <?php if(isset($error)) { ?><p class="text-danger"> <?php echo '*'.$error ?> </p> <?php } ?>
                                 <input type="submit" name="btn_submit" class="btn btn-info btn-md" value="Anmelden">
                             </div>
                             <div id="register-link" class="text-right">

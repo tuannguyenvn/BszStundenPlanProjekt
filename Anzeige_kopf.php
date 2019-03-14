@@ -204,7 +204,7 @@ if ($admin == 0) {
         } ?>
     </div>
         <div class="embed-responsive embed-responsive-4by3" style="margin-top:0px;width:calc(100%-50px);height:85%;padding-left:10px;padding-right:10px;" >
-            <iframe id="anzeige" name="anzeige" class="embed-responsive-item" src="anzeige.php" style="height:100%" ></iframe>
+            <iframe id="anzeige" name="anzeige" class="embed-responsive-item" src="anzeige.php" style="height:100%;padding-left:20px;padding-right:10px;" ></iframe>
         </div> 
 </body>
 
